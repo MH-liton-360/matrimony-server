@@ -9,12 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// users 
+matrimonyW2
 
 
 
 
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://career_connect:<db_password>@cluster0.rs9y1es.mongodb.net/?appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
