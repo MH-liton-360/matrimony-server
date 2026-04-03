@@ -14,7 +14,8 @@ app.use(express.json());
 // matrimonyW2
 // fL9YtQcqwmyeLi3c
 
-const uri = "mongodb+srv://career_connect:<db_password>@cluster0.rs9y1es.mongodb.net/?appName=Cluster0";
+
+const uri = "mongodb+srv://matrimonyW2:fL9YtQcqwmyeLi3c@cluster0.rs9y1es.mongodb.net/?appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -38,6 +39,7 @@ async function run() {
     }
 }
 run().catch(console.dir);
+
 
 
 app.get('/', (req, res) => {
