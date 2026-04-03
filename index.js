@@ -4,7 +4,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // call express 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // middileWare 
 app.use(cors());
@@ -12,7 +12,7 @@ app.use(express.json());
 
 // users +  Password 
 // matrimonyW2
-// fL9YtQcqwmyeLi3c
+// PQxP2wL7QBgMEjsq
 
 
 const uri = "mongodb+srv://matrimonyW2:fL9YtQcqwmyeLi3c@cluster0.rs9y1es.mongodb.net/?appName=Cluster0";
