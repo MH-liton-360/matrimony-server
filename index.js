@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config()
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // Middle Ware 
 app.use(cors());
@@ -38,6 +38,18 @@ async function run() {
         app.get('/api/biodata', async (req, res) => {
             const result = await biodataCollection.find().toArray();
             res.send(result);
+        });
+
+
+        app.get("/api/biodata/:id", async (req, res) => {
+            try {
+                const { id } = req.params;
+                const result = await biodataCollection.findOne({ _id: new ObjectId(id) });
+                res.send(result);
+            } catch (err) {
+                console.error(err);
+                res.status(500).send({ error: "Something went wrong" });
+            }
         });
 
         console.log("MongoDB Connected!"); //  important
