@@ -23,17 +23,36 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-        // Send a ping to confirm a successful connection
+
+        //  database + collection define
+        const database = client.db("matrimonyDB");
+        const biodataCollection = database.collection("biodata");
+
+        // POST - biodata save
+        app.post('/api/biodata', async (req, res) => {
+            const data = req.body;
+
+            const result = await biodataCollection.insertOne(data);
+            res.send(result);
+        });
+
+        // GET - sob biodata ana
+        app.get('/api/biodata', async (req, res) => {
+            const result = await biodataCollection
+                .find()
+                .sort({ _id: -1 }) // latest first
+                .toArray();
+
+            res.send(result);
+        });
+
         await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        console.log("MongoDB Connected!");
     } finally {
-        // Ensures that the client will close when you finish/error
-        // await client.close();
+
     }
 }
-run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
