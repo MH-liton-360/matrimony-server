@@ -25,35 +25,28 @@ async function run() {
     try {
         await client.connect();
 
-        //  database + collection define
         const database = client.db("matrimonyDB");
         const biodataCollection = database.collection("biodata");
 
-        // POST - biodata save
+        // routes
         app.post('/api/biodata', async (req, res) => {
             const data = req.body;
-
             const result = await biodataCollection.insertOne(data);
             res.send(result);
         });
 
-        // GET - sob biodata ana
         app.get('/api/biodata', async (req, res) => {
-            const result = await biodataCollection
-                .find()
-                .sort({ _id: -1 }) // latest first
-                .toArray();
-
+            const result = await biodataCollection.find().toArray();
             res.send(result);
         });
 
-        await client.db("admin").command({ ping: 1 });
-        console.log("MongoDB Connected!");
-    } finally {
+        console.log("MongoDB Connected!"); //  important
 
+    } catch (err) {
+        console.error("MongoDB ERROR ❌:", err); //  eta add koro
     }
 }
-
+run().catch(console.dir);
 
 app.get('/', (req, res) => {
     res.send('Matrimony is Running')
