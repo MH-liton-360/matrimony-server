@@ -41,6 +41,7 @@ async function run() {
         });
 
 
+        // Biodata details page get api
         app.get("/api/biodata/:id", async (req, res) => {
             try {
                 const { id } = req.params;
@@ -51,11 +52,10 @@ async function run() {
                 res.status(500).send({ error: "Something went wrong" });
             }
         });
-
-        console.log("MongoDB Connected!"); //  important
+        console.log("MongoDB Connected.");
 
     } catch (err) {
-        console.error("MongoDB ERROR ❌:", err); //  eta add koro
+        console.error("MongoDB ERROR ❌:", err);
     }
 }
 run().catch(console.dir);
