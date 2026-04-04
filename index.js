@@ -55,7 +55,7 @@ async function run() {
         console.log("MongoDB Connected.");
 
     } catch (err) {
-        console.error("MongoDB ERROR ❌:", err);
+        console.error("MongoDB ERROR:", err);
     }
 }
 run().catch(console.dir);
