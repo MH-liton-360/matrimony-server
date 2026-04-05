@@ -36,8 +36,30 @@ async function run() {
         });
 
         app.get('/api/biodata', async (req, res) => {
-            const result = await biodataCollection.find().toArray();
-            res.send(result);
+            try {
+                const specialProfessions = ["doctor", "professor", "engineer", "actor", "sportsman"];
+
+                const result = await biodataCollection.aggregate([
+                    {
+                        $addFields: {
+                            priority: {
+                                $cond: [
+                                    { $in: [{ $toLower: "$profession" }, specialProfessions] },
+                                    1,
+                                    2
+                                ]
+                            }
+                        }
+                    },
+                    { $sort: { priority: 1 } },
+                    { $limit: 4 }
+                ]).toArray();
+
+                res.send(result);
+            } catch (err) {
+                console.error(err);
+                res.status(500).send({ error: "Something went wrong" });
+            }
         });
 
 
