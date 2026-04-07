@@ -38,7 +38,7 @@ async function run() {
             res.send(result);
         });
 
-        // 🔹 Featured Premium
+        //Featured Premium APi
         app.get('/api/biodata/featured', async (req, res) => {
             const specialProfessions = ["doctor", "professor", "engineer", "actor", "sportsman"];
             const result = await biodataCollection.aggregate([
@@ -59,7 +59,7 @@ async function run() {
             res.send(result);
         });
 
-        // 🔹 Search API (updated)
+        //Search API (updated)
         app.get('/api/biodata/search', async (req, res) => {
             const { age, profession, district, gender, religion } = req.query;
 
