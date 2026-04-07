@@ -25,23 +25,22 @@ async function run() {
         const database = client.db("matrimonyDB");
         const biodataCollection = database.collection("biodata");
 
-        //  Create Biodata
+        // 🔹 Create Biodata
         app.post('/api/biodata', async (req, res) => {
             const data = req.body;
             const result = await biodataCollection.insertOne(data);
             res.send(result);
         });
 
-        //  Get ALL Biodata (Search use korbe)
+        // 🔹 Get ALL Biodata
         app.get('/api/biodata', async (req, res) => {
             const result = await biodataCollection.find().toArray();
             res.send(result);
         });
 
-        //  Featured Premium
+        // 🔹 Featured Premium
         app.get('/api/biodata/featured', async (req, res) => {
             const specialProfessions = ["doctor", "professor", "engineer", "actor", "sportsman"];
-
             const result = await biodataCollection.aggregate([
                 {
                     $addFields: {
@@ -57,25 +56,29 @@ async function run() {
                 { $sort: { priority: 1 } },
                 { $limit: 4 }
             ]).toArray();
-
             res.send(result);
         });
 
-        // Search API
+        // 🔹 Search API (updated)
         app.get('/api/biodata/search', async (req, res) => {
-            const { age, profession, district } = req.query;
+            const { age, profession, district, gender, religion } = req.query;
 
             let query = {};
-
             if (age) query.age = Number(age);
             if (profession) query.profession = { $regex: profession, $options: "i" };
             if (district) query.district = { $regex: district, $options: "i" };
+            if (gender) query.gender = { $regex: gender, $options: "i" };
+            if (religion) query.religion = { $regex: religion, $options: "i" };
 
-            const result = await biodataCollection.find(query).toArray();
-            res.send(result);
+            try {
+                const result = await biodataCollection.find(query).toArray();
+                res.send(result);
+            } catch (err) {
+                res.status(500).send({ error: "Search failed", details: err.message });
+            }
         });
 
-        // Single biodata
+        // 🔹 Single biodata
         app.get("/api/biodata/:id", async (req, res) => {
             const { id } = req.params;
             const result = await biodataCollection.findOne({ _id: new ObjectId(id) });
@@ -91,7 +94,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Matrimony is Running')
+    res.send('Matrimony API Running')
 })
 
 app.listen(port, () => {
