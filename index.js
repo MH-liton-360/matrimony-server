@@ -25,20 +25,20 @@ async function run() {
         const database = client.db("matrimonyDB");
         const biodataCollection = database.collection("biodata");
 
-        // 🔹 Create Biodata
+        // Create Biodata
         app.post('/api/biodata', async (req, res) => {
             const data = req.body;
             const result = await biodataCollection.insertOne(data);
             res.send(result);
         });
 
-        // 🔹 Get ALL Biodata
+        // Get ALL Biodata
         app.get('/api/biodata', async (req, res) => {
             const result = await biodataCollection.find().toArray();
             res.send(result);
         });
 
-        //Featured Premium APi
+        // Featured Premium APi
         app.get('/api/biodata/featured', async (req, res) => {
             const specialProfessions = ["doctor", "professor", "engineer", "actor", "sportsman"];
             const result = await biodataCollection.aggregate([
@@ -59,7 +59,7 @@ async function run() {
             res.send(result);
         });
 
-        //Search API (updated)
+        // Search API (updated)
         app.get('/api/biodata/search', async (req, res) => {
             const { age, profession, district, gender, religion } = req.query;
 
@@ -69,7 +69,6 @@ async function run() {
             if (district) query.district = { $regex: district, $options: "i" };
             if (gender) query.gender = { $regex: gender, $options: "i" };
             if (religion) query.religion = { $regex: religion, $options: "i" };
-
             try {
                 const result = await biodataCollection.find(query).toArray();
                 res.send(result);
@@ -78,7 +77,7 @@ async function run() {
             }
         });
 
-        // 🔹 Single biodata
+        // Single biodata
         app.get("/api/biodata/:id", async (req, res) => {
             const { id } = req.params;
             const result = await biodataCollection.findOne({ _id: new ObjectId(id) });
